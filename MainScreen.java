@@ -1,4 +1,4 @@
-package healthcare.app;
+package healthcare;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -25,11 +25,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
-
-// import user classes
-import healthcare.app.Actors.*;
-import healthcare.app.DBUtil;
-import healthcare.app.ErrorHandler;
 
 public class MainScreen extends Application {
     
@@ -58,14 +53,14 @@ public class MainScreen extends Application {
         	String userEmail = userEmailField.getText();
         	
             // Check if log in password matches email when the button is clicked
-            if (DBUtil.userLogin(userEmail, userPasswordField.getText())) {
+            if (UserManagement.verifyUserPassword(userEmail, userPasswordField.getText())) {
             	
             	/* String sessionId = SessionManager.createSession(userEmailField.getText());
             	 * 	 
             	System.out.print(sessionId);
             	*/
              // Retrieve user authority after successful login
-                String userRole = DBUtil.getUserAuthority(userEmail);
+                String userRole = UserManagement.getUserAuthority(userEmail);
                 
                 // Decide which dashboard to show based on user authority
                 switch (userRole) {
@@ -180,7 +175,7 @@ public class MainScreen extends Application {
         		ErrorHandler.showAlertDialog("Thank you! Your registration was successful.");
 	            
 	        	//insert user with insert user function from 
-	        	DBUtil.insertUser("Patient", firstNameField.getText(), lastNameField.getText(),
+	        	UserManagement.insertUser("Patient", firstNameField.getText(), lastNameField.getText(),
 	        			emailField.getText(), LocalDate.parse(dobField.getText()), hashedPassword); 
         	}
         	else {

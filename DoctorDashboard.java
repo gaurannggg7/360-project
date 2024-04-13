@@ -1,4 +1,4 @@
-package healthcare.app;
+package healthcare;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import java.sql.SQLException;
 
 // Assuming DBUtil and User are defined elsewhere in your package
-import healthcare.app.Actors.*;
+import actors.*;
 
 public class DoctorDashboard {
     
@@ -22,7 +22,7 @@ public class DoctorDashboard {
     // This method now accepts a Stage and user email to configure it directly
     public Scene createDoctorDashboardScene(Stage stage, String email) throws SQLException {
         // Assuming you have some method to fetch user details
-        User currentDoctor = DBUtil.getUserDataByEmail(email);
+        User currentDoctor = UserManagement.getUserDataByEmail(email);
 
         BorderPane borderPane = new BorderPane();
 
@@ -108,6 +108,5 @@ public class DoctorDashboard {
         // Create and return the Scene
         return new Scene(grid, 400, 600);
     }
-
     // main method removed if not extending Application
 }

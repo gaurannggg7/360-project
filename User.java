@@ -1,4 +1,4 @@
-package healthcare.app.Actors;
+package actors;
 
 import java.time.LocalDate;
 

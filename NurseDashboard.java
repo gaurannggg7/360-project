@@ -1,4 +1,4 @@
-package healthcare.app;
+package healthcare;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
-import healthcare.app.Actors.*;
+import actors.*;
 
 // Notice we're not extending Application anymore
 public class NurseDashboard {
@@ -20,7 +20,7 @@ public class NurseDashboard {
     // This method now accepts a Stage and configures it directly
     public Scene createNurseDashboardScene(Stage stage, String email) throws SQLException {
     	
-    	User currentNurse = DBUtil.getUserDataByEmail(email);
+    	User currentNurse = UserManagement.getUserDataByEmail(email);
     	
         // Configuration of the BorderPane, inbox, and patientRecords remains the same
         BorderPane borderPane = new BorderPane();
@@ -80,7 +80,7 @@ public class NurseDashboard {
         
 
         Button searchButton = new Button("Search");
-        searchButton.setOnAction(event -> DBUtil.searchPatientRecords(firstNameField.getText(), 
+        searchButton.setOnAction(event -> UserManagement.searchPatientRecords(firstNameField.getText(), 
         		lastNameField.getText(), dobField.getText()));
         
         patientRecords.add(searchButton, 1, 4);
