@@ -21,14 +21,17 @@ public class DoctorDashboard {
 
     // This method now accepts a Stage and user email to configure it directly
     public Scene createDoctorDashboardScene(Stage stage, String email) throws SQLException {
-        // Assuming you have some method to fetch user details
+        
+    	//Initialize user object based on their email
         User currentDoctor = UserManagement.getUserDataByEmail(email);
 
         BorderPane borderPane = new BorderPane();
 
         // Set up sections
-        GridPane inboxPane = setupInboxSection();
+        GridPane inboxPane = MessagingDashboard.setupInboxSection(currentDoctor);
+        
         GridPane patientRecordsPane = setupPatientRecordsSection(stage);
+        
         Button appointmentButton = new Button("Enter Appointment Portal");
         // Assuming you have a method to open the appointment portal
         appointmentButton.setOnAction(event -> showAppointmentPortalScene(stage));

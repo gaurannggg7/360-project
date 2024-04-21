@@ -143,7 +143,7 @@ public class UserManagement {
 	                if (dbSqlDate != null) {
 	                    dob = dbSqlDate.toLocalDate();
 	                }
-	                String userID = resultSet.getString("id");
+	                int userID = resultSet.getInt("id");
 
 	                switch(userAuthority) {
 	                    case "Patient":

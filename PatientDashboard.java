@@ -22,7 +22,7 @@ public class PatientDashboard {
         BorderPane borderPane = new BorderPane();
         
         // Left Section - Inbox
-        GridPane inbox = setupInboxSection();
+        GridPane inboxPane = MessagingDashboard.setupInboxSection(currentPatient);
         
         // Center Section - Most Recent Visit
         GridPane recentVisitPane = setupRecentVisitSection();
@@ -33,7 +33,7 @@ public class PatientDashboard {
         // Top Section - Recent Messages TabPane
         TabPane recentMessagesTabPane = setupRecentMessagesSection();
 
-        borderPane.setLeft(inbox);
+        borderPane.setLeft(inboxPane);
         borderPane.setCenter(recentVisitPane);
         borderPane.setRight(contactInfoBox);
         borderPane.setTop(recentMessagesTabPane);
@@ -41,19 +41,6 @@ public class PatientDashboard {
         stage.setTitle("Dashboard for " + currentPatient.getFirstName());
 
         return new Scene(borderPane, 1000, 600); // Adjust size as necessary
-    }
-    
-    private GridPane setupInboxSection() {
-        GridPane inboxPane = new GridPane();
-        inboxPane.setPadding(new Insets(20));
-        inboxPane.setVgap(10);
-        inboxPane.add(new Label("Inbox"), 0, 0);
-        Button viewMessagesButton = new Button("View Messages");
-        Button sendMessageButton = new Button("Send Message");
-        inboxPane.add(viewMessagesButton, 0, 1);
-        inboxPane.add(sendMessageButton, 1, 1);
-
-        return inboxPane; // Correctly return the GridPane object
     }
 
     private GridPane setupRecentVisitSection() {

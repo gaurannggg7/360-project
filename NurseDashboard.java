@@ -20,18 +20,18 @@ public class NurseDashboard {
     // This method now accepts a Stage and configures it directly
     public Scene createNurseDashboardScene(Stage stage, String email) throws SQLException {
     	
+    	//Initialize user object based on their email
     	User currentNurse = UserManagement.getUserDataByEmail(email);
     	
-        // Configuration of the BorderPane, inbox, and patientRecords remains the same
         BorderPane borderPane = new BorderPane();
         
         // Inbox section setup
-        GridPane inbox = setupInboxSection();
+        GridPane inboxPane = MessagingDashboard.setupInboxSection(currentNurse);
 
         // Patient record section setup
         GridPane patientRecords = setupPatientRecordsSection();
 
-        borderPane.setLeft(inbox);
+        borderPane.setLeft(inboxPane);
         borderPane.setRight(patientRecords);
 
         // Assuming nurseName is fetched from elsewhere or set as a class variable
