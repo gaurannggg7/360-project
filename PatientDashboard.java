@@ -21,6 +21,9 @@ public class PatientDashboard {
         
         BorderPane borderPane = new BorderPane();
         
+        // Logout button
+        GridPane logOutUserPane = MainScreen.logoutUserButton(stage);
+        
         // Left Section - Inbox
         GridPane inboxPane = MessagingDashboard.setupInboxSection(currentPatient);
         
@@ -37,6 +40,7 @@ public class PatientDashboard {
         borderPane.setCenter(recentVisitPane);
         borderPane.setRight(contactInfoBox);
         borderPane.setTop(recentMessagesTabPane);
+        borderPane.setBottom(logOutUserPane);
 
         stage.setTitle("Dashboard for " + currentPatient.getFirstName());
 

@@ -3,6 +3,7 @@ package healthcare;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,11 +15,14 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.Insets;
 import java.sql.SQLException;
 //import bcrypt library to hash/salt passwords
 import java.time.LocalDate;
@@ -31,11 +35,78 @@ public class MainScreen extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    private Scene mainScene;
+    private static Scene mainScene;
     
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Doctor's Office");
+    	
+    	loginScreen(primaryStage); 
+        
+    }
+    
+    private static void showPatientRegistrationPage(Stage primaryStage) {
+        // Labels and fields for the registration form
+        Label firstNameLabel = new Label("First Name:");
+        TextField firstNameField = new TextField();
+        firstNameField.setPromptText("Enter your first name");
+
+        Label lastNameLabel = new Label("Last Name:");
+        TextField lastNameField = new TextField();
+        lastNameField.setPromptText("Enter your last name");
+        
+        Label emailLabel = new Label("Email:");
+        TextField emailField = new TextField();
+        emailField.setPromptText("Insert email@domain:");
+
+        Label dobLabel = new Label("Date of Birth (YYYY-MM-DD):"); // Improved label to include format
+        TextField dobField = new TextField();
+        dobField.setPromptText("YYYY-MM-DD");
+
+        Label passLabel = new Label("Password:");
+        PasswordField passField = new PasswordField(); // Changed to PasswordField for security
+        passField.setPromptText("Password");
+
+        Label passConfirmLabel = new Label("Confirm Password:");
+        PasswordField passConfirmField = new PasswordField(); // Changed to PasswordField
+        passConfirmField.setPromptText("Confirm Password");
+        
+        
+        Button btnSubmit = new Button("Submit");
+        btnSubmit.setOnAction(e -> {
+        	//check if the pass matches the confirmed pass
+        	if (passField.getText().equals(passConfirmField.getText())) {
+        		
+	        	//hash and salt pass before storing in DB if passwords match
+	            String hashedPassword = BCrypt.hashpw(passField.getText(), BCrypt.gensalt(12));
+	            		
+        		
+        		ErrorHandler.showAlertDialog("Thank you! Your registration was successful.");
+	            
+	        	//insert user with insert user function from 
+	        	UserManagement.insertUser("Patient", firstNameField.getText(), lastNameField.getText(),
+	        			emailField.getText(), LocalDate.parse(dobField.getText()), hashedPassword); 
+        	}
+        	else {
+        		ErrorHandler.showErrorDialog("Error, review information");
+        	}
+        });
+
+        Button btnBack = new Button("Back");
+        btnBack.setOnAction(e -> primaryStage.setScene(mainScene)); // Go back to the main scene
+
+        VBox registrationLayout = new VBox(10, firstNameLabel, firstNameField, lastNameLabel, lastNameField, 
+        		emailLabel, emailField, dobLabel, dobField, passLabel, passField, passConfirmLabel, 
+        		passConfirmField, btnSubmit, btnBack);
+        
+        registrationLayout.setAlignment(Pos.CENTER);
+
+        Scene registrationScene = new Scene(registrationLayout, 600, 600); // Adjusted size to fit all elements
+        
+        primaryStage.setScene(registrationScene);
+    }
+    
+    private static void loginScreen(Stage primaryStage) {
+    	primaryStage.setTitle("Doctor's Office");
 
         TextField userEmailField = new TextField();
         userEmailField.setPromptText("Email");
@@ -130,87 +201,27 @@ public class MainScreen extends Application {
 
     
         Scene scene = new Scene(layout, 300, 250);
-        this.mainScene = scene;
+        mainScene = scene;
         primaryStage.setScene(scene);
         primaryStage.show();
-        
     }
     
-    private void showPatientRegistrationPage(Stage primaryStage) {
-        // Labels and fields for the registration form
-        Label firstNameLabel = new Label("First Name:");
-        TextField firstNameField = new TextField();
-        firstNameField.setPromptText("Enter your first name");
-
-        Label lastNameLabel = new Label("Last Name:");
-        TextField lastNameField = new TextField();
-        lastNameField.setPromptText("Enter your last name");
-        
-        Label emailLabel = new Label("Email:");
-        TextField emailField = new TextField();
-        emailField.setPromptText("Insert email@domain:");
-
-        Label dobLabel = new Label("Date of Birth (YYYY-MM-DD):"); // Improved label to include format
-        TextField dobField = new TextField();
-        dobField.setPromptText("YYYY-MM-DD");
-
-        Label passLabel = new Label("Password:");
-        PasswordField passField = new PasswordField(); // Changed to PasswordField for security
-        passField.setPromptText("Password");
-
-        Label passConfirmLabel = new Label("Confirm Password:");
-        PasswordField passConfirmField = new PasswordField(); // Changed to PasswordField
-        passConfirmField.setPromptText("Confirm Password");
-        
-        
-        Button btnSubmit = new Button("Submit");
-        btnSubmit.setOnAction(e -> {
-        	//check if the pass matches the confirmed pass
-        	if (passField.getText().equals(passConfirmField.getText())) {
-        		
-	        	//hash and salt pass before storing in DB if passwords match
-	            String hashedPassword = BCrypt.hashpw(passField.getText(), BCrypt.gensalt(12));
-	            		
-        		
-        		ErrorHandler.showAlertDialog("Thank you! Your registration was successful.");
-	            
-	        	//insert user with insert user function from 
-	        	UserManagement.insertUser("Patient", firstNameField.getText(), lastNameField.getText(),
-	        			emailField.getText(), LocalDate.parse(dobField.getText()), hashedPassword); 
-        	}
-        	else {
-        		ErrorHandler.showErrorDialog("Error, review information");
-        	}
+    // Button method to logout user
+    public static GridPane logoutUserButton (Stage primaryStage) {
+    	GridPane logOutUserPane = new GridPane();
+    	
+	    logOutUserPane.setVgap(10);
+	    logOutUserPane.add(new Label("Inbox"), 0, 0);
+	    
+    	Button logOutButton = new Button("Logout");
+        logOutButton.setOnAction(event -> {
+        	loginScreen(primaryStage);
         });
 
-        Button btnBack = new Button("Back");
-        btnBack.setOnAction(e -> primaryStage.setScene(mainScene)); // Go back to the main scene
+        // Add button to the grid pane at the second column, top row
+        logOutUserPane.add(logOutButton, 1, 0);  // Column index 1 to push it to the right
 
-        VBox registrationLayout = new VBox(10, firstNameLabel, firstNameField, lastNameLabel, lastNameField, 
-        		emailLabel, emailField, dobLabel, dobField, passLabel, passField, passConfirmLabel, 
-        		passConfirmField, btnSubmit, btnBack);
-        
-        registrationLayout.setAlignment(Pos.CENTER);
-
-        Scene registrationScene = new Scene(registrationLayout, 600, 600); // Adjusted size to fit all elements
-        
-        primaryStage.setScene(registrationScene);
+        return logOutUserPane;
     }
     
-    
-    // Test dashboards
-    /* 
-    
-    
-	} 
-	
-	*/
-	
-	//Messaging system implementation, PROBLEM: needs to take User objects id not email to register sent message
-	
-	/*
-	 
-	
-	
-	*/
 }

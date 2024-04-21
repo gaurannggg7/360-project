@@ -14,10 +14,8 @@ import java.sql.SQLException;
 
 import actors.*;
 
-// Notice we're not extending Application anymore
 public class NurseDashboard {
 
-    // This method now accepts a Stage and configures it directly
     public Scene createNurseDashboardScene(Stage stage, String email) throws SQLException {
     	
     	//Initialize user object based on their email
@@ -25,39 +23,22 @@ public class NurseDashboard {
     	
         BorderPane borderPane = new BorderPane();
         
-        // Inbox section setup
+        // Logout button
+        GridPane logOutUserPane = MainScreen.logoutUserButton(stage);
+        
+        // Gridpane section setup for user interface
         GridPane inboxPane = MessagingDashboard.setupInboxSection(currentNurse);
-
-        // Patient record section setup
         GridPane patientRecords = setupPatientRecordsSection();
 
         borderPane.setLeft(inboxPane);
         borderPane.setRight(patientRecords);
-
-        // Assuming nurseName is fetched from elsewhere or set as a class variable
-        String nurseName = "Nurse Name"; // Placeholder for dynamic nurse name fetching
+        borderPane.setBottom(logOutUserPane);
+        
         stage.setTitle("Dashboard for " + currentNurse.getFirstName());
 
         return new Scene(borderPane, 500, 500); // Adjust size as necessary
     }
-
-    private GridPane setupInboxSection() {
-    	GridPane inbox = new GridPane();
-        inbox.setPadding(new Insets(10, 10, 10, 10));
-        inbox.setVgap(10);
-        inbox.setHgap(10);
-        inbox.setAlignment(Pos.CENTER_LEFT);
-
-        Button viewMsgBtn = new Button("View Messages");
-        Button sendMsgBtn = new Button("Send Message");
-
-        inbox.add(new Label("Inbox"), 0, 0);
-        inbox.add(viewMsgBtn, 0, 1);
-        inbox.add(sendMsgBtn, 0, 2);
-
-        return inbox;
-    }
-
+    
     private GridPane setupPatientRecordsSection() {
     	GridPane patientRecords = new GridPane();
         patientRecords.setPadding(new Insets(10, 10, 10, 10));

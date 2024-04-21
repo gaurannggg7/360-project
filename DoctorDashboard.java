@@ -17,15 +17,15 @@ import actors.*;
 
 public class DoctorDashboard {
     
-    // Removed the Application extension and start method
-
-    // This method now accepts a Stage and user email to configure it directly
     public Scene createDoctorDashboardScene(Stage stage, String email) throws SQLException {
         
     	//Initialize user object based on their email
         User currentDoctor = UserManagement.getUserDataByEmail(email);
 
         BorderPane borderPane = new BorderPane();
+        
+        // Logout button
+        GridPane logOutUserPane = MainScreen.logoutUserButton(stage);
 
         // Set up sections
         GridPane inboxPane = MessagingDashboard.setupInboxSection(currentDoctor);
@@ -40,6 +40,7 @@ public class DoctorDashboard {
         borderPane.setLeft(inboxPane);
         borderPane.setRight(patientRecordsPane);
         borderPane.setBottom(appointmentButton);
+        borderPane.setBottom(logOutUserPane);
 
         stage.setTitle("Dashboard for Doctor " + currentDoctor.getFirstName());
 
