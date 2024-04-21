@@ -7,16 +7,15 @@ public class User {
     protected String lastName;
     protected String email;
     protected LocalDate dateOfBirth;
-    protected String uniqueIdentifier;
+    protected int uniqueIdentifier;
 
-    public User(String firstName, String lastName, String email, LocalDate dateOfBirth, String uniqueIdentifier) {
+    public User(String firstName, String lastName, String email, LocalDate dateOfBirth, int uniqueIdentifier) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
         this.uniqueIdentifier = uniqueIdentifier;
     }
-    
     
     public String getFirstName() {
         return this.firstName;
@@ -30,5 +29,8 @@ public class User {
         return this.email;
     }
     
-    //make more get methods
+    public int getUserID() {
+        return this.uniqueIdentifier;
+    }
+    
 }
